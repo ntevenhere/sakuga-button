@@ -13,6 +13,12 @@ prefixes = [ "https://www.", "http://www.", "http://", "https://"]
 
 address_skeleton = "sakugabooru.com/data/"
 
+debug = true
+function log(thing) {
+  if (debug)
+    console.log(thing)
+}
+
 //Convenience function to build a string of selectors delimited by ',' for querySelectorAll
 function build_selectors(selector_skeleton) {
   selectors = ""
@@ -22,7 +28,7 @@ function build_selectors(selector_skeleton) {
     if (i < prefixes.length -1) { selectors += ','} // add the separator between the queries but carefully not on the last one
     i += 1
   })
-  console.log(selectors)
+  log(selectors)
   return selectors
 }
 
@@ -31,7 +37,6 @@ function build_selectors(selector_skeleton) {
 regex = new RegExp("^(?:https?://)?(?:www\\.)?sakugabooru\\.com/data/([a-fA-F0-9]+)")
 
 function create_link(url) {
-  console.log(url)
   match = url.match(regex)
   filename = match[1]
   if (filename) {
@@ -85,71 +90,97 @@ document.head.append(Object.assign(document.createElement("style"), {
   transition-timing-function: cubic-bezier(.04,.79,.36,1);
 }`
 }))
-console.log("start")
 
 function insert_in_video(elem, url) {
   icon_a = create_link(url)
-  console.log(icon_a)
   if (icon_a) {
     block = document.createElement("div")
     minsize = 12
     block.style = "text-align: right;"
-    console.log(block)
     block.appendChild(icon_a)
     elem.insertAdjacentElement("afterend", block)
   }
 }
 
+function build_many_selectors(list) {
+  selectorss = []
+  list.forEach((selector_skeleton) => {
+    selectorss.push(build_selectors(selector_skeleton))
+  })
+  return selectorss.join(",")
+}
+
 //Might be slow bc AFAIK it only loads after all the images etc have loaded. Ideally I just have to wait for the DOM,
 //and supposedly there's a way: https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
 //but its not working.
+log("Waiting for load...")
 window.addEventListener("load", (event) => {
-  console.log("a")
-  var slinks = document.querySelectorAll(build_selectors("a[href^="))
-  console.log(slinks)
+  log("Load event")
+  places = []
+  anchors = document.querySelectorAll(build_selectors("a[href^="))
+  anchors.forEach((item) => {
+    places.push({ element: item, url:item.href})
+  })
+
+  mediasrc = document.querySelectorAll(build_many_selectors(["video[src^=", "img[src^="]))
+  mediasrc.forEach((item) => {
+    places.push({ element: item, url:item.src})
+  })
+
+  //Some videos store the src url in a <source/> tag directly under them
+  //https://anilist.co/forum/thread/52406
+  sources = document.querySelectorAll(build_many_selectors(["video>source[src^=", "picture>source[src^="]))
+  //Multiple sources can be under one video, a naive approach would cause duplicates
+  top_media = []
+  sources.forEach((source) => {
+    parent = { element: source.parentElement, url: source.src}
+    if (! top_media.includes(parent))
+      top_media.push(parent)
+  })
+  log(top_media)
+  places.push(...top_media)
+
+  // Reject elements that are nested in other elements that we're already tracking
+  // as those are often duplicates.
+  // Example: Pages sometimes have an anchor surrounding an <img> element, redundantly linking to the source
+  // of the media often so the user can left-click it and visit it.
+  trial_places = places
+  places.forEach((place) => {
+    element = place["element"]
+    passed = []
+    trial_places.forEach((trial_place) => {
+      trial_element = trial_place["element"]
+      // Why the check element == trial_element
+      // : an element apparently .contains itself
+      // the check is to circumvent the edge case where
+      // .contains doesn't correctly tell if an element has a parent
+      // from which we normally draw disqualifying judgement
+      if (! element.contains(trial_element) || element == trial_element || place["url"] != trial_place["url"]) {
+        passed.push(trial_place)
+      }
+    })
+    trial_places = passed
+  })
+
+  top_places = trial_places
+  log(places)
+  log(top_places)
 
   // Use of try & catch: It's not worth stopping the whole script
   // just because it tripped on one link. Do log the error though.
-  slinks.forEach((link) => {
+  top_places.forEach((place) => {
+    element = place["element"]
+    url = place["url"]
     try {
-      icon_a = create_link(link.href)
-      if (icon_a) {
-        link.insertAdjacentElement("afterend", icon_a)
+      if ('inline' == window.getComputedStyle(element).display) {
+        icon_a = create_link(url)
+        if (icon_a) {
+          element.insertAdjacentElement("afterend", icon_a)
+        }
+      } else {
+        insert_in_video(element, url)
       }
     } catch(error) {
-      console.log(error)
-    }
-  })
-  selectors = build_selectors("video[src^=") + "," + build_selectors("img[src^=")
-  var svideos = document.querySelectorAll(selectors)
-
-  console.log(svideos)
-  svideos.forEach((video) => {
-    try {
-      insert_in_video(video, video.src)
-    } catch(error) {
-      console.log(error)
-    }
-  })
-  //Some videos store the src url in a <source/> tag directly under them
-  //https://anilist.co/forum/thread/52406
-  selectors = build_selectors("video>source[src^=") + "," + build_selectors("picture>source[src^=")
-  var ssources = document.querySelectorAll(selectors)
-
-  console.log(ssources)
-  //Multiple sources can be under one video, a naive approach would cause duplicates
-  applied_videos = []
-  ssources.forEach((source) => {
-    try {
-      video = source.parentElement
-      console.log(video)
-      console.log(applied_videos)
-      if (! applied_videos.includes(video)) {
-        insert_in_video(video, source.src)
-        applied_videos.push(video)
-      }
-    } catch(error) {
-      console.log("HERERE")
       console.log(error)
     }
   })
