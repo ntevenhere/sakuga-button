@@ -7,7 +7,7 @@
   "homepage_url": "https://example.com",
 
   "icons": {
-    "48": "icon.svg"
+    "48": "extension-icon.svg"
   },
   "permissions": [
     "tabs"
