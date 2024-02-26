@@ -1,6 +1,6 @@
 <div align="center">
 
-# ![作](src/extension-icon.svg) _Sakuga MEGAJUMP_
+# _Sakuga MEGAJUMP_ ![作](src/extension-icon.svg) 
 In animation, each second counts. This extension adds a useful button next to Sakuga Booru media links when not on the Sakuga Booru website. That's it!
 </div>
 
