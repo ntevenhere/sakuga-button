@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    id="svg13"
-   width="40.987999"
-   height="40.987999"
+   width="61.481998"
+   height="61.481998"
    version="1.1"
-   viewBox="0 0 20.493999 20.494"
+   viewBox="0 0 20.493999 20.493999"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -16,11 +16,11 @@
      height="28.659473"
      x="-3.7409124"
      y="-2.7619472"
-     transform="matrix(0.59631741,-0.15934437,0.14135051,0.52897865,3.0802116,5.9001228)" />
+     transform="matrix(0.59631741,-0.15934437,0.14135051,0.52897865,2.8921609,5.6799284)" />
   <g
      id="logo"
      fill="#ad001e"
-     transform="matrix(0.67484278,0,0,0.67484278,-0.32702939,0.16181071)"
+     transform="matrix(0.67484278,0,0,0.67484278,-0.51508006,-0.05838372)"
      style="fill:#fffbfb;fill-opacity:1">
     <path
        id="circle"
