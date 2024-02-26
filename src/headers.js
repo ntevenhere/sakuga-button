@@ -50,7 +50,7 @@ function create_link(url) {
     a = document.createElement("a")
     a.href = build_query(filename)
     a.className = "sakugajump"
-    a.title = "Visit Sakuga Booru post for md5: " + filename
+    a.title = "Jump to Sakuga Booru post for md5: " + filename
     a.target = "_blank"
     return a
   } else {

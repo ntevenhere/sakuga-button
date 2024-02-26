@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "Sakuga",
-  "version": "1.0",
+  "name": "Sakuga MEGAJUMP",
+  "version": "1.1",
 
-  "description": "Adds a red border to all webpages matching mozilla.org.",
-  "homepage_url": "https://example.com",
+  "description": "Button to jump to Sakuga Booru posts.",
+  "homepage_url": "https://gitea.com/resi/Sakuga-MEGAJUMP",
 
   "icons": {
     "48": "extension-icon.svg"
@@ -24,6 +24,6 @@
   "page_action": {
     "default_icon": "extension-icon.svg",
     "show_matches": ["https://*.sakugabooru.com/data/*"],
-    "default_title": "Visit Sakuga Booru post"
+    "default_title": "Jump to Sakuga Booru post"
   }
 }
