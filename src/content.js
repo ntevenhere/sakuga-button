@@ -46,85 +46,85 @@ function push_stylesheet() {
     height: max(1rem,20px);
   }
   `
-  }))
+  }));
 }
 
 //Might be slow bc AFAIK it only loads after all the images etc have loaded. Ideally I just have to wait for the DOM,
 //and supposedly there's a way: https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
 //but its not working.
-log("Waiting for load...")
+log("Waiting for load...");
 window.addEventListener("load", (event) => {
-  log("Load event")
-  places = []
-  anchors = document.querySelectorAll(build_selectors("a[href^="))
+  log("Load event");
+  const places = [];
+  const anchors = document.querySelectorAll(build_selectors("a[href^="));
   anchors.forEach((item) => {
-    places.push({ element: item, url:item.href})
+    places.push({ element: item, url:item.href});
   })
 
-  mediasrc = document.querySelectorAll(build_many_selectors(["video[src^=", "img[src^="]))
+  const mediasrc = document.querySelectorAll(build_many_selectors(["video[src^=", "img[src^="]));
   mediasrc.forEach((item) => {
-    places.push({ element: item, url:item.src})
+    places.push({ element: item, url:item.src});
   })
 
   //Some videos store the src url in a <source/> tag directly under them
   //https://anilist.co/forum/thread/52406
-  sources = document.querySelectorAll(build_many_selectors(["video>source[src^=", "picture>source[src^="]))
+  const sources = document.querySelectorAll(build_many_selectors(["video>source[src^=", "picture>source[src^="]));
   //Multiple sources can be under one video, a naive approach would cause duplicates
   sources.forEach((source) => {
-    parent = { element: source.parentElement, url: source.src}
-    dup = false
+    parent = { element: source.parentElement, url: source.src};
+    const dup = false;
     places.forEach((item) => {
       if (!dup) { //Break out of the loop the moment it is found to be a duplicate, I just know the break statement doens't work inside forEach loops
         if(parent["element"] == item["element"]) {
-          dup = true
+          dup = true;
         }
       }
     })
-    if (!dup) places.push(parent)
+    if (!dup) places.push(parent);
   })
-  log(places)
+  log(places);
 
   // Reject elements that are nested in other elements that we're already tracking
   // as those are often duplicates.
   // Example: Pages sometimes have an anchor surrounding an <img> element, redundantly linking to the source
   // of the media often so the user can left-click it and visit it.
-  trial_places = places
+  let trial_places = places;
   places.forEach((place, i) => {
-    element = place["element"]
-    passed = []
+    const element = place["element"];
+    let passed = [];
     trial_places.forEach((trial_place, j) => {
-      issame = i == j // Just let pass items compared against themselves
-      trial_element = trial_place["element"]
-      isntchild = ! element.contains(trial_element) || place["url"] != trial_place["url"]
+      const issame = i == j, // Just let pass items compared against themselves;
+            trial_element = trial_place["element"],
+            isntchild = ! element.contains(trial_element) || place["url"] != trial_place["url"];
       if (issame || isntchild) {
-        passed.push(trial_place)
+        passed.push(trial_place);
       }
     })
-    trial_places = passed
+    trial_places = passed;
   })
 
-  top_places = trial_places
-  log("final")
-  log(places)
-  log(top_places)
+  const top_places = trial_places;
+  log("final");
+  log(places);
+  log(top_places);
 
   if (top_places.length > 0) push_stylesheet()
   // Use of try & catch: It's not worth stopping the whole script
   // just because it tripped on one link. Do log the error though.
   top_places.forEach((place) => {
-    element = place["element"]
-    url = place["url"]
+    const element = place["element"],
+          url = place["url"];
     try {
       if ('inline' == window.getComputedStyle(element).display) {
-        icon_a = create_link(url)
+        let icon_a = create_link(url);
         if (icon_a) {
-          element.insertAdjacentElement("afterend", icon_a)
+          element.insertAdjacentElement("afterend", icon_a);
         }
       } else {
-        insert_in_video(element, url)
+        insert_in_video(element, url);
       }
     } catch(error) {
-      console.log(error)
+      console.log(error);
     }
   })
 });
