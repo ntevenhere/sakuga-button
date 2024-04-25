@@ -13,7 +13,7 @@ prefixes = [ "https://www.", "http://www.", "http://", "https://"]
 
 address_skeleton = "sakugabooru.com/data/"
 
-debug = true
+debug = false
 function log(thing) {
   if (debug)
     console.log(thing)

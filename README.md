@@ -1,11 +1,21 @@
 <div align="center">
 
-# _Sakuga MEGAJUMP_ ![作](src/extension-icon.svg) 
-In animation, each second counts. This extension adds a useful button next to Sakuga Booru media links when not on the Sakuga Booru website. That's it!
+# _Sakuga MEGAJUMP_ ![作](src/extension-icon.svg)
+A lot can happen in one second in animation. Button next to Sakuga Booru media, outside of Sakuga Booru.
 </div>
 
-Use of [Sakuga Booru](https://www.sakugabooru.com/)'s animation archive is not uncommon in blogs and discussion about animation. However, when an MP4 or GIF from sakugabooru.com is shared by someone, it is difficult to dig deeper into the credits of the clip when one wants to. One cannot arrive at the detailed page for a clip on Sakuga Booru without a manual search.
-
-**Sakuga MEGAJUMP** adds a button to jump over that trouble on any website.
+Find more information about an animation GIF or MP4, see its tags on Sakuga Booru.\*
+Blogs and discussions, for convenience, often play media from sakugabooru.com hotlinked. It is possible to find the tags, but the process is annoying, which a simple extension can eliminate.
 
 _\* This extension can't find the source of random anime clips. It is only useful in the (common) case where blogs play a video directly from Sakuga Booru._
+
+Supported websites:
+* blog.sakugabooru.com
+* myanimelist.com/forum
+* anilist.net/forum
+* animetudes.com
+* ...
+* The number of webpages that can be parsed automatically.
+
+## What it technically does
+In contexts where media is being played from `https://sakugabooru.com/data/$MD5SUM.ext` it is useful to compose https://www.sakugabooru.com/post?tags=md5:$MD5SUM.ext+deleted:all with only a click. It's really quite simple.

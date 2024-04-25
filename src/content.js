@@ -24,7 +24,7 @@ function push_stylesheet() {
     filter: grayscale(80%);
     /* Hover OFF */
     transition-property: filter, opacity;
-    transition-duration: 5s;
+    transition-duration: .5s;
     transition-timing-function: cubic-bezier(.22,.61,.36,1);
   }
   .sakugajump:hover {
@@ -33,7 +33,7 @@ function push_stylesheet() {
 
     /* Hover IN */
     transition-property: filter, opacity;
-    transition-duration: .5s;
+    transition-duration: .1s;
     transition-timing-function: cubic-bezier(.04,.79,.36,1);
   }
   .sakugajump-block {
@@ -84,10 +84,12 @@ window.addEventListener("load", (event) => {
   })
   log(places)
 
-  // Reject elements that are nested in other elements that we're already tracking
-  // as those are often duplicates.
-  // Example: Pages sometimes have an anchor surrounding an <img> element, redundantly linking to the source
-  // of the media often so the user can left-click it and visit it.
+  // Reject elements that are nested in other elements that we're already
+  // tracking as those are often duplicates. Example: Pages sometimes have an
+  // anchor surrounding an <img> element, redundantly linking to the source of
+  // the media often so the user can left-click it and visit it. In that case we
+  // don't add the button to the <img> element, but add it to the parent,
+  // enclosing element.
   trial_places = places
   places.forEach((place, i) => {
     element = place["element"]
