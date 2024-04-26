@@ -72,7 +72,7 @@ window.addEventListener("load", (event) => {
   //Multiple sources can be under one video, a naive approach would cause duplicates
   sources.forEach((source) => {
     parent = { element: source.parentElement, url: source.src};
-    const dup = false;
+    let dup = false;
     places.forEach((item) => {
       if (!dup) { //Break out of the loop the moment it is found to be a duplicate, I just know the break statement doens't work inside forEach loops
         if(parent["element"] == item["element"]) {
@@ -91,17 +91,17 @@ window.addEventListener("load", (event) => {
   // don't add the button to the <img> element, but add it to the parent,
   // enclosing element.
   let trial_places = places;
-  places.forEach((place, i) => {
+  places.forEach((place) => {
     const element = place["element"];
     let passed = [];
-    trial_places.forEach((trial_place, j) => {
-      const issame = i == j, // Just let pass items compared against themselves;
+    trial_places.forEach((trial_place) => {
+      const issame = trial_place == place, // Just let pass items compared against themselves
             trial_element = trial_place["element"],
             isntchild = ! element.contains(trial_element) || place["url"] != trial_place["url"];
       if (issame || isntchild) {
         passed.push(trial_place);
       }
-    })
+    });
     trial_places = passed;
   })
 
