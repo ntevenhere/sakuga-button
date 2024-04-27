@@ -91,20 +91,24 @@ window.addEventListener("load", (event) => {
   // don't add the button to the <img> element, but add it to the parent,
   // enclosing element.
   let trial_places = places;
-  places.forEach((place) => {
+  places.forEach((place, i) => {
     const element = place["element"];
-    let passed = [];
-    trial_places.forEach((trial_place) => {
-      const issame = trial_place == place, // Just let pass items compared against themselves
-            trial_element = trial_place["element"],
-            isntchild = ! element.contains(trial_element) || place["url"] != trial_place["url"];
-      if (issame || isntchild) {
-        passed.push(trial_place);
+    trial_places.forEach((trial_place, j) => {
+      if (trial_place != null) {
+        const issame = i == j, // Just let pass items compared against themselves
+              isntchild = ! element.contains(trial_place["element"]),
+              isdistinct = place["url"] != trial_place["url"],
+              passes = issame || isntchild || isdistinct;
+        if (!passes) trial_places[j] = null;
       }
     });
-    trial_places = passed;
-  })
+  });
 
+  // The above nested forEachs could be implemented as a function for .filter
+  // slightly larger than this one. At the point which I frantically wrote most
+  // of the extension, forEach was my favorite pattern in javascript, or rather
+  // the only one I knew.
+  trial_places.filter((trial_place) => trial_place != null);
   const top_places = trial_places;
   log("final");
   log(places);
