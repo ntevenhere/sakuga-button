@@ -82,7 +82,6 @@ window.addEventListener("load", (event) => {
     })
     if (!dup) places.push(parent);
   })
-  log(places);
 
   // Reject elements that are nested in other elements that we're already
   // tracking as those are often duplicates. Example: Pages sometimes have an
@@ -90,7 +89,7 @@ window.addEventListener("load", (event) => {
   // the media often so the user can left-click it and visit it. In that case we
   // don't add the button to the <img> element, but add it to the parent,
   // enclosing element.
-  let trial_places = places;
+  let trial_places = places.slice(); // slice: make copy NOT make reference
   places.forEach((place, i) => {
     const element = place["element"];
     trial_places.forEach((trial_place, j) => {
@@ -103,12 +102,11 @@ window.addEventListener("load", (event) => {
       }
     });
   });
-
   // The above nested forEachs could be implemented as a function for .filter
   // slightly larger than this one. At the point which I frantically wrote most
   // of the extension, forEach was my favorite pattern in javascript, or rather
   // the only one I knew.
-  trial_places.filter((trial_place) => trial_place != null);
+  trial_places = trial_places.filter((trial_place) => trial_place != null);
   const top_places = trial_places;
   log("final");
   log(places);
