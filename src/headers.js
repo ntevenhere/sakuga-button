@@ -13,7 +13,7 @@ const prefixes = [ "https://www.", "http://www.", "http://", "https://"];
 
 const address_skeleton = "sakugabooru.com/data/";
 
-const debug = false;
+const debug = true;
 function log(thing) {
   if (debug) console.log(thing);
 }
@@ -60,6 +60,14 @@ function create_link(url) {
 function insert_in_video(elem, url) {
   let icon_a = create_link(url);
   if (icon_a) {
+    /* We need a div that wraps the video and the button div, for the button div's width to comform to the video's width (so the button is always placed directly under the video) */
+    let wrapper = document.createElement("div");
+    elem.parentNode.insertBefore(wrapper, elem); // insert wrapper before el in the DOM tree
+    wrapper.appendChild(elem);
+    wrapper.style.width = "fit-content";
+    wrapper.className = "sakugajump-wrapper";
+
+
     let block = document.createElement("div");
     block.className = "sakugajump-block";
     block.appendChild(icon_a);

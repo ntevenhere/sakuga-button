@@ -119,10 +119,17 @@ window.addEventListener("load", (event) => {
     const element = place["element"],
           url = place["url"];
     try {
-      if ('inline' == window.getComputedStyle(element).display) {
+      parent = element.parentElement;
+      isshrinkwrapped = window.getComputedStyle(parent).display == 'block' && 1 == parent.childElementCount;  // Some elements have a computed style that is 'inline' but effectively display as block, because their parent element is displayed block
+      if ('inline' == window.getComputedStyle(element).display && !isshrinkwrapped) {
         let icon_a = create_link(url);
         if (icon_a) {
-          element.insertAdjacentElement("afterend", icon_a);
+          if ("A" == element.tagName) {
+            /* Nested in an <a> the button is still functional. Nesting inside the element is preferable as it creates a stronger association. (if some page javascripts decides the link should be gone the button will too) */
+            element.insertAdjacentElement("beforeend", icon_a); /* Insert nested */
+          } else {
+            element.insertAdjacentElement("afterend", icon_a); /* Insert as sibling */
+          }
         }
       } else {
         insert_in_video(element, url);
