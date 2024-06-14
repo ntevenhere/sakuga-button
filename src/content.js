@@ -13,12 +13,9 @@ function push_stylesheet() {
     display: inline-block;
     background-image: url("https://www.sakugabooru.com/favicon.ico");
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJzdmcxMyIgd2lkdGg9IjIwLjQ5NCIgaGVpZ2h0PSIxOCIgdmVyc2lvbj0iMS4xIj4KICA8ZyBpZD0ibG9nbyIgZmlsbD0iI2FkMDAxZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQuNTA2IC03KSI+CiAgICA8cGF0aCBpZD0iY2lyY2xlIiBkPSJNMTEuODUgNC4yNDJBMTIuNSAxMi41IDAgMCAwIDMuNSAxNmExMi41IDEyLjUgMCAwIDAgNy4wODggMTEuMjUxVjE2LjI5Nkg1LjI4MnYtNS43MDVoNC4xMDFjLjUyNS4wMDEuOTY1LS4zNCAxLjA5My0uODV6bTEwLjgwNSAxLjE4MS0uNjMgMi41MTZoMy41MjRhMTIuNSAxMi41IDAgMCAwLTIuODk0LTIuNTE2Wm0tNC4xMDkgNS44MDYtLjE1LjU5NmMtLjExOC40OS0uNDE0Ljg5My0uNzc3IDEuMjF2LjIxaC45Mjd6bS02LjYzMiAxLjU0MWMtLjM4Ni4yOTYtLjkwNS4zMjctMS4zNzUuNDc0aDEuMzc1em05LjY4NCAxMS40ODV2Mi44OTZhMTIuNSAxMi41IDAgMCAwIDMuNzgtMi44OTZ6IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxLjg2NyAzLjg2NSkgc2NhbGUoLjc1MzkwNykiLz4KICAgIDxwYXRoIGlkPSJsZWZ0IiBkPSJNMTIgMTk5OWgxdjEwaC0ydi0xMEg3di0yaDEuOTRhMiAyIDAgMCAwIDEuOTQtMS41MUwxMiAxOTkxaDJsLTEuMzggNS41MWEuNjQuNjQgMCAwIDEtLjYyLjQ5eiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMTk4NCkiLz4KICAgIDxwYXRoIGlkPSJyaWdodCIgZD0iTTE3IDE5OTd2Mmg4djJoLTh2Mmg4djJoLTh2NGgtMnYtMTBoLTF2LTJhLjY0LjY0IDAgMCAwIC42Mi0uNDlMMTYgMTk5MWgybC0xIDRoOHYyeiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtMTk4NCkiLz4KICA8L2c+Cjwvc3ZnPgo=");
-    width: max(.7em,12px);
-    height: max(.7em,12px);
     background-size:contain;
     background-position-y: top;
     background-position-x: center;
-    margin-left: .15em;
     background-repeat:no-repeat;
     opacity: 65%;
     filter: grayscale(80%);
@@ -41,9 +38,28 @@ function push_stylesheet() {
     margin: 5px;
   }
 
+  .sakugajump {
+    width: max(.7em,12px);
+    height: max(.7em,12px);
+    margin-left: .20em;
+  }
   .sakugajump-block .sakugajump {
-    width: max(1rem,20px);
-    height: max(1rem,20px);
+    width: max(1em,20px);
+    height: max(1em,20px);
+    margin: .20em;
+  }
+
+  /* MOBILE: Boost icon size, for fat fingers */
+
+  @media (pointer: coarse) {
+    .sakugajump {
+      width: max(.85em,15px);
+      height: max(.85em,15px);
+      filter: grayscale(50%); /* The more saturated version is exclusive to hovering, saturate the normal icon to compensate for touch devices never getting to see the hover state */
+    }
+    .sakugajump-block .sakugajump {
+      /* Is large enough already */
+    }
   }
   `
   }));
