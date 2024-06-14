@@ -120,7 +120,7 @@ window.addEventListener("load", (event) => {
           url = place["url"];
     try {
       parent = element.parentElement;
-      isshrinkwrapped = window.getComputedStyle(parent).display == 'block' && 1 == parent.childElementCount;  // Some elements have a computed style that is 'inline' but effectively display as block, because their parent element is displayed block
+      isshrinkwrapped = window.getComputedStyle(parent).display == 'block' && 1 == parent.childNodes.length;  // Some elements have a computed style that is 'inline' but effectively display as block, because their parent element is displayed block
       if ('inline' == window.getComputedStyle(element).display && !isshrinkwrapped) {
         let icon_a = create_link(url);
         if (icon_a) {
