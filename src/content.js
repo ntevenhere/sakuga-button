@@ -135,9 +135,8 @@ window.addEventListener("load", (event) => {
     const element = place["element"],
           url = place["url"];
     try {
-      parent = element.parentElement;
-      isshrinkwrapped = window.getComputedStyle(parent).display == 'block' && 1 == parent.childNodes.length;  // Some elements have a computed style that is 'inline' but effectively display as block, because their parent element is displayed block
-      if ('inline' == window.getComputedStyle(element).display && !isshrinkwrapped) {
+      // Decide to insert the inline version of the button or the block version of the button
+      if ('inline' == window.getComputedStyle(element).display && !is_shrinkwrapped(element)) {
         let icon_a = create_link(url);
         if (icon_a) {
           if ("A" == element.tagName) {
@@ -148,7 +147,7 @@ window.addEventListener("load", (event) => {
           }
         }
       } else {
-        insert_in_video(element, url);
+        insert_as_block(element, url);
       }
     } catch(error) {
       console.log(error);

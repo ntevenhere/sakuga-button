@@ -52,19 +52,19 @@ function create_link(url) {
     a.target = "_blank";
     return a;
   } else {
-    return undefined;
+    return undefined; // TODO should log an error
   }
 }
 
 
-function insert_in_video(elem, url) {
+function insert_as_block(elem, url) {
   let icon_a = create_link(url);
   if (icon_a) {
     /* We need a div that wraps the video and the button div, for the button div's width to comform to the video's width (so the button is always placed directly under the video) */
     let wrapper = document.createElement("div");
     elem.parentNode.insertBefore(wrapper, elem); // insert wrapper before el in the DOM tree
     wrapper.appendChild(elem);
-    wrapper.style.width = "fit-content";
+    wrapper.style.width = "100%";
     wrapper.className = "sakugajump-wrapper";
 
 
@@ -82,3 +82,69 @@ function build_many_selectors(list) {
   })
   return selectorss.join(",");
 }
+
+/*
+
+Use these functions to provide a proper count
+*/
+
+
+function is_all_ws(nod) {
+  return !/[^\t\n\r ]/.test(nod.textContent);
+}
+
+function is_ignorable(nod) {
+  // Copied from https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace#whitespace_helper_functions
+  return (
+    nod.nodeType === 8 || // A comment node
+    (nod.nodeType === 3 && is_all_ws(nod))
+  ); // a text node, all ws
+};
+function nodecount(element, cond = (nod) => true) {
+  // Custom function because .children ignores text nodes completely, but the
+  // alternative .childNodes also includes irrelevant whitespace nodes
+  let count = 0;
+  for (node of element.childNodes) {
+    if (!is_ignorable(node) && cond()) count++;
+  }
+  return count;
+};
+
+
+
+// NOTE <br> following an element, causes the element to appear to be a block element
+// like here: https://n0thanky0u.neocities.org/blog_posts/mosquito
+// TODO I have to add a test for a br sibling
+function is_shrinkwrapped(el) {
+  // An element might be layed out like a block element, while technically being an inline element,
+  // this function tries to infer these situations.
+  // Returns true if the element is both "thinly wrapped" by its ancestors and
+  // one of the ancestors is a "block" level element
+  let p = el.parentElement;
+  for (;;) {
+    let display = window.getComputedStyle(p).display,
+        n = nodecount(p);
+
+    /* It's important that this runs first and the other last
+     * If we find siblings before the block ancestor then I think the image element is inlined */
+    if (n > 1 || p == document.body) {
+      // This second check is just to guard the edgecase of the <figure> element,
+      // where <figcaption> children are ignorable
+      figure_ignore = false;
+      if (p.tagName === "figure") {
+        // If ALL siblings of the element we ascended from are just figcaption elements
+        if (nodecount(el, (nod) => nod.tagName === "figcaption") + 1 >= n) figure_ignore = true;
+      }
+      if (!figure_ignore)
+        return false;
+    }
+
+    if (display === "block") return true;
+
+    /* give up if we have climbed to <html/> */
+    if (p == document.documentElement) return false;
+
+    p = p.parentElement;
+  };
+
+};
