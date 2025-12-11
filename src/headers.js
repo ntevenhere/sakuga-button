@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name        Sakuga MEGAJUMP
+// @name        Sakuga Booru Button
 // @namespace   Violentmonkey Scripts
 // @match       https://animetudes.com/*
 // @match       https://*/*
 // @grant       none
 // @version     1.0
 // @run-at      document-idle
-// @description In animation, each second counts. This extension adds a useful button next to Sakuga Booru media links when not on the Sakuga Booru website. That's it!
+// @description Button for Sakuga Booru media.
 // ==/UserScript==
 
 const prefixes = [ "https://www.", "http://www.", "http://", "https://"];

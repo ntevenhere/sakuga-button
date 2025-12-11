@@ -1,23 +1,35 @@
 <div align="center">
 
-# _Sakuga MEGAJUMP_ ![作](src/extension-icon.svg)
-Button next to Sakuga Booru media, outside of Sakuga Booru.
+<img src="src/extension-icon.svg" alt="作" width="64"/>
+
+# _Sakuga Booru Button_ 
+Button for Sakuga Booru media
 </div>
 
-A lot can happen in one second in animation.
+<p><a href="https://addons.mozilla.org/en-US/firefox/addon/sakuga-megajump/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" width="18" /> Firefox addon</a></p>
+<p><a href="#Chrome installation"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="18" /> Chrome extension</a></p>
 
-Find more information about an animation GIF or MP4, see its tags on <b>Sakuga Booru.</b>\*
-Blogs and discussions, for convenience, often play media from sakugabooru.com hotlinked. It is possible to find the tags, but the process is annoying, which a simple extension can eliminate.
+Find more information about an animation GIFs and MP4s, see the tags on <b>Sakuga Booru.</b>\*
+Blogs and anime discussions for convenience often play media from sakugabooru.com hotlinked. There are ways to find the information and tags attached to the Sakuga Booru post, but the process can be made easy and instant with a simple extension.
 
-_\* This extension can't find the source of random anime clips. It is only useful in the (common) case where blogs play a video directly from Sakuga Booru._
+_\* This extension can't find the source of random anime clips (see in the README § How it works).
 
 Supported websites:
 * blog.sakugabooru.com
 * myanimelist.com/forum
 * anilist.net/forum
 * animetudes.com
-* ...
-* The number of webpages that can be parsed automatically.
+* Similar webpages.
 
-## What it technically does
-In contexts where media is being played from `https://sakugabooru.com/data/$MD5SUM.ext` it is useful to compose `https://www.sakugabooru.com/post?tags=md5:$MD5SUM.ext+deleted:all` with only a click. That's all.
+## How it works
+In contexts where media is being played from `https://sakugabooru.com/data/$MD5SUM.ext` it is useful to compose `https://www.sakugabooru.com/post?tags=md5:$MD5SUM+deleted:all` with a button press. That's all.
+
+## Chrome installation
+We'll be sideloading the extension.
+1. `git clone` this repository
+2. run ./build-extension.sh. This creates an .xpi file.
+3. In Chrome's "Manage Extensions" page, enable developer mode
+4. Using 7zip/tar/WinRAR extract the contents of the xpi archive to a folder
+5. Finally, load the extension as unpacked in Chrome ("Load as unpacked")
+
+Due to Google's deprecation of Manifest v2, manifest.json has to be edited before the extension can be loaded in Chrome.

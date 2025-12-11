@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Sakuga MEGAJUMP",
+  "name": "Sakuga Booru Button",
   "version": "1.2",
 
-  "description": "Button to jump to Sakuga Booru posts.",
+  "description": "Button for Sakuga Booru media",
   "homepage_url": "https://gitea.com/resi/Sakuga-MEGAJUMP",
 
   "icons": {
