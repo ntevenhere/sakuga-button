@@ -112,8 +112,7 @@ function nodecount(element, cond = (nod) => true) {
 
 
 
-// NOTE <br> following an element, causes the element to appear to be a block element
-// like here: https://n0thanky0u.neocities.org/blog_posts/mosquito
+// NOTE If <br> is following an element, it causes the element to appear to be a block element
 // TODO I have to add a test for a br sibling
 function is_shrinkwrapped(el) {
   // An element might be layed out like a block element, while technically being an inline element,
